@@ -5,5 +5,4 @@ a simple maven plugin (and ANT task) to handle multi scope developement environm
 
 ## License
 
-Copyright (c) 2011-2014 GitHub, Inc. See the LICENSE file for license rights and
-limitations (MIT).
+The MIT License (MIT) Copyright (c) 2014 Florent Amaridon and other contributors:
