@@ -21,21 +21,10 @@ a simple maven plugin (and ANT task) to handle multi scope developement environm
             <environment scope="production">
                 <value>valeur production</value>
             </environment>
+            ...
         </values>
     </property>
-    <property name="tft.server.url">
-        <values>
-            <environment scope="developement">
-                <value>http://developement</value>
-            </environment>
-            <environment scope="pre-production">
-                <value>http://pre-production</value>
-            </environment>
-            <environment scope="production">
-                <value>http://production</value>
-            </environment>
-        </values>
-    </property>
+    ...
 </properties>
 
 ```
