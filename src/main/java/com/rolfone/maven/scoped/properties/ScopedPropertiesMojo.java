@@ -51,8 +51,8 @@ public class ScopedPropertiesMojo extends AbstractMojo
 	public void execute() throws MojoExecutionException, MojoFailureException
 	{
 
-		JAXBContext jaxbContext = null;
-		Unmarshaller unmarshaller = null;
+		JAXBContext jaxbContext;
+		Unmarshaller unmarshaller;
 		try
 		{
 			jaxbContext = JAXBContext.newInstance(Wrapper.class, Property.class);

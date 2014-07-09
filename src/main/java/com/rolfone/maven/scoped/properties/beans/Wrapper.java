@@ -19,7 +19,7 @@ public class Wrapper<T>
 
 	public Wrapper()
 	{
-		items = new ArrayList<T>();
+		items = new ArrayList<>();
 	}
 
 	public Wrapper(List<T> items)

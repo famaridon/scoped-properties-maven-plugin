@@ -22,7 +22,7 @@ public class EnvironmentAdapter extends XmlAdapter<EnvironmentAdapter.Environmen
 	@Override
 	public Map<String, String> unmarshal(Environment adaptedMap) throws Exception
 	{
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, String> map = new HashMap<>();
 		for (Entry entry : adaptedMap.entry)
 		{
 			map.put(entry.key, entry.value);
@@ -47,7 +47,7 @@ public class EnvironmentAdapter extends XmlAdapter<EnvironmentAdapter.Environmen
 	public static class Environment
 	{
 		@XmlElement(name = "environment")
-		public List<Entry> entry = new ArrayList<Entry>();
+		public List<Entry> entry = new ArrayList<>();
 
 	}
 
