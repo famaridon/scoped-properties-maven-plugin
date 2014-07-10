@@ -47,7 +47,7 @@ public class ScopedPropertiesMojo extends AbstractMojo
 			ScopedPropertiesUtils.buildPropertiesFiles(this.getPropertiesXmlFolder(), this.getOutputFolder(), this.getTargetScope());
 		} catch (BuildPropertiesFilesException e)
 		{
-			throw new MojoExecutionException("An exception occur see cause : ", e);
+			throw new MojoExecutionException("An exception occur see cause :  ", e);
 		}
 
 	}
