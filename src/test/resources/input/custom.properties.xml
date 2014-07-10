@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<properties>
+    <property name="scoped.properties.git.url">
+        <values>
+            <environment scope="development">
+                <value>https://github.com/famaridon/scoped-properties-maven-plugin</value>
+            </environment>
+            <environment scope="pre-production">
+                <value>https://github.com/famaridon/scoped-properties-maven-plugin</value>
+            </environment>
+            <environment scope="production">
+                <value>https://github.com/famaridon/scoped-properties-maven-plugin</value>
+            </environment>
+        </values>
+    </property>
+</properties>
