@@ -5,6 +5,7 @@ import com.famaridon.maven.scoped.properties.beans.properties.Property;
 import com.famaridon.maven.scoped.properties.exceptions.BuildPropertiesFilesException;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -51,7 +52,12 @@ public class ScopedPropertiesUtils
 				Properties properties = new Properties();
 				for (Property property : wrapper.getItems())
 				{
-					properties.setProperty(property.getName(), property.getValues().get(targetScope));
+					String value = property.getValues().get(targetScope);
+					if ( StringUtils.isEmpty(value) )
+					{
+						value = property.getDefaultValue();
+					}
+					properties.setProperty(property.getName(), value);
 				}
 
 				File outputFile = new File(outputFolder, FilenameUtils.getBaseName(propertiesXml.getName()));
