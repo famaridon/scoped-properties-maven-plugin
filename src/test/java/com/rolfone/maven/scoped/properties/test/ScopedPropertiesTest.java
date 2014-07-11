@@ -38,17 +38,18 @@ public class ScopedPropertiesTest
 		Path tempDirectoryPath = Files.createTempDirectory("ScopedPropertiesTest");
 
 		tempDirectory = tempDirectoryPath.toFile();
+		tempDirectory.mkdirs();
 		tempDirectoryInput = new File(tempDirectory, "input");
-		tempDirectoryInput.mkdirs();
+		tempDirectoryInput.mkdir();
 		tempDirectoryOutput = new File(tempDirectory, "output");
-		tempDirectoryOutput.mkdirs();
+		tempDirectoryOutput.mkdir();
 
 		// copy the resource custom.properties.xml into user temps directory to test in real case
 		// WARNING : if you copy other file all test should be updated
 		propertiesXml = new File(tempDirectoryInput, CUSTOM_PROPERTIES_XML_FILE_NAME);
 		try (FileOutputStream fileOutputStream = new FileOutputStream(propertiesXml);)
 		{
-			IOUtils.copy(getClass().getClassLoader().getResourceAsStream(CUSTOM_PROPERTIES_XML_FILE_NAME), fileOutputStream);
+			IOUtils.copy(getClass().getClassLoader().getResourceAsStream("input/" + CUSTOM_PROPERTIES_XML_FILE_NAME), fileOutputStream);
 			inputFileCount++;
 		}
 	}
