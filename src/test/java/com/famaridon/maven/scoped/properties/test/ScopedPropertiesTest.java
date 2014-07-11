@@ -1,7 +1,7 @@
-package com.rolfone.maven.scoped.properties.test;
+package com.famaridon.maven.scoped.properties.test;
 
-import com.rolfone.maven.scoped.properties.exceptions.BuildPropertiesFilesException;
-import com.rolfone.maven.scoped.properties.utils.ScopedPropertiesUtils;
+import com.famaridon.maven.scoped.properties.exceptions.BuildPropertiesFilesException;
+import com.famaridon.maven.scoped.properties.utils.ScopedPropertiesUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Assert;

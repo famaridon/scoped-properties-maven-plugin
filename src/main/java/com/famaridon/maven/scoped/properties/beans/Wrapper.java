@@ -1,4 +1,4 @@
-package com.rolfone.maven.scoped.properties.beans;
+package com.famaridon.maven.scoped.properties.beans;
 
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlRootElement;

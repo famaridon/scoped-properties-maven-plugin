@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.rolfone.maven.scoped.properties.beans.adapter;
+package com.famaridon.maven.scoped.properties.beans.adapter;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;

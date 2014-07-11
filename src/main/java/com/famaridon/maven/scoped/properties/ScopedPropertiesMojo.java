@@ -1,7 +1,7 @@
-package com.rolfone.maven.scoped.properties;
+package com.famaridon.maven.scoped.properties;
 
-import com.rolfone.maven.scoped.properties.exceptions.BuildPropertiesFilesException;
-import com.rolfone.maven.scoped.properties.utils.ScopedPropertiesUtils;
+import com.famaridon.maven.scoped.properties.exceptions.BuildPropertiesFilesException;
+import com.famaridon.maven.scoped.properties.utils.ScopedPropertiesUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;

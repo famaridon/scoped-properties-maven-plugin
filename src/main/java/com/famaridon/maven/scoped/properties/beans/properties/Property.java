@@ -1,6 +1,6 @@
-package com.rolfone.maven.scoped.properties.beans.properties;
+package com.famaridon.maven.scoped.properties.beans.properties;
 
-import com.rolfone.maven.scoped.properties.beans.adapter.EnvironmentAdapter;
+import com.famaridon.maven.scoped.properties.beans.adapter.EnvironmentAdapter;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;

@@ -1,8 +1,8 @@
-package com.rolfone.maven.scoped.properties.utils;
+package com.famaridon.maven.scoped.properties.utils;
 
-import com.rolfone.maven.scoped.properties.beans.Wrapper;
-import com.rolfone.maven.scoped.properties.beans.properties.Property;
-import com.rolfone.maven.scoped.properties.exceptions.BuildPropertiesFilesException;
+import com.famaridon.maven.scoped.properties.beans.Wrapper;
+import com.famaridon.maven.scoped.properties.beans.properties.Property;
+import com.famaridon.maven.scoped.properties.exceptions.BuildPropertiesFilesException;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 

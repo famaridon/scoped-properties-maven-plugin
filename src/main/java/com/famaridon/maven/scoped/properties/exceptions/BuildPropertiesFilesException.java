@@ -1,4 +1,4 @@
-package com.rolfone.maven.scoped.properties.exceptions;
+package com.famaridon.maven.scoped.properties.exceptions;
 
 /**
  * Created by famaridon on 10/07/2014.
