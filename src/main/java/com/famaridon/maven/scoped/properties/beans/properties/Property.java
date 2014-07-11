@@ -3,7 +3,9 @@ package com.famaridon.maven.scoped.properties.beans.properties;
 import com.famaridon.maven.scoped.properties.beans.adapter.EnvironmentAdapter;
 
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,10 +16,12 @@ import java.util.Map;
  *
  * @author famaridon
  */
-@XmlRootElement
+@XmlRootElement()
+@XmlType(namespace = "http://famaridon.com/properties")
 public class Property
 {
 	private String name;
+	private String defaultValue;
 	private Map<String, String> values = new HashMap<>();
 
 	@XmlAttribute
@@ -40,5 +44,16 @@ public class Property
 	public void setValues(Map<String, String> values)
 	{
 		this.values = values;
+	}
+
+	@XmlElement(name = "default-value")
+	public String getDefaultValue()
+	{
+		return defaultValue;
+	}
+
+	public void setDefaultValue(String defaultValue)
+	{
+		this.defaultValue = defaultValue;
 	}
 }

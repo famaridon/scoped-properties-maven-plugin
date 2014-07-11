@@ -3,12 +3,9 @@
  */
 package com.famaridon.maven.scoped.properties.beans.adapter;
 
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,7 +13,8 @@ import java.util.Map;
  *
  * @author famaridon
  */
-public class EnvironmentAdapter extends XmlAdapter<EnvironmentAdapter.Environment, Map<String, String>>
+@XmlType(namespace = "http://famaridon.com/properties")
+public class EnvironmentAdapter extends XmlAdapter<Environment, Map<String, String>>
 {
 
 	@Override
@@ -42,23 +40,6 @@ public class EnvironmentAdapter extends XmlAdapter<EnvironmentAdapter.Environmen
 			adaptedMap.entry.add(entry);
 		}
 		return adaptedMap;
-	}
-
-	public static class Environment
-	{
-		@XmlElement(name = "environment")
-		public List<Entry> entry = new ArrayList<>();
-
-	}
-
-	public static class Entry
-	{
-		@XmlAttribute(name = "scope")
-		public String key;
-
-		@XmlElement
-		public String value;
-
 	}
 
 }
