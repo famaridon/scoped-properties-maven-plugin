@@ -13,4 +13,43 @@
             </environment>
         </values>
     </property>
+    <property name="property.with.equals">
+        <values>
+            <environment scope="development">
+                <value>https://git.famaridon.com?tab=repositories</value>
+            </environment>
+            <environment scope="pre-production">
+                <value>https://git.famaridon.com?tab=repositories</value>
+            </environment>
+            <environment scope="production">
+                <value>https://git.famaridon.com?tab=repositories</value>
+            </environment>
+        </values>
+    </property>
+    <property name="property.key with space">
+        <values>
+            <environment scope="development">
+                <value>https://git.famaridon.com?tab=repositories</value>
+            </environment>
+            <environment scope="pre-production">
+                <value>https://git.famaridon.com?tab=repositories</value>
+            </environment>
+            <environment scope="production">
+                <value>https://git.famaridon.com?tab=repositories</value>
+            </environment>
+        </values>
+    </property>
+    <property name="property.value.with.unicode.char">
+        <values>
+            <environment scope="development">
+                <value>ç Σ</value>
+            </environment>
+            <environment scope="pre-production">
+                <value>ç Σ</value>
+            </environment>
+            <environment scope="production">
+                <value>ç Σ</value>
+            </environment>
+        </values>
+    </property>
 </properties>

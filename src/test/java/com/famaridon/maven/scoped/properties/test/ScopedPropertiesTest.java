@@ -2,17 +2,15 @@ package com.famaridon.maven.scoped.properties.test;
 
 import com.famaridon.maven.scoped.properties.exceptions.BuildPropertiesFilesException;
 import com.famaridon.maven.scoped.properties.utils.ScopedPropertiesUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.*;
+import java.util.Properties;
 import java.util.Set;
 
 /**
@@ -35,9 +33,8 @@ public class ScopedPropertiesTest
 	public void inti() throws IOException
 	{
 		// build a temp directory using java nio
-		Path tempDirectoryPath = Files.createTempDirectory("ScopedPropertiesTest");
 
-		tempDirectory = tempDirectoryPath.toFile();
+		tempDirectory = new File("./target/test/");
 		tempDirectory.mkdirs();
 		tempDirectoryInput = new File(tempDirectory, "input");
 		tempDirectoryInput.mkdir();
@@ -66,8 +63,24 @@ public class ScopedPropertiesTest
 		Set<File> outputFileSet = ScopedPropertiesUtils.buildPropertiesFiles(tempDirectoryInput, tempDirectoryOutput, SCOPE.PRODUCTION);
 		Assert.assertTrue(outputFileSet.size() == inputFileCount);
 
-		System.out.println(outputFileSet);
-		// the output file name should be
+		// the output file name should be custom.properties
+		// we can't compare file byte per byte because properties output the timestamp.
+		File output = new File(this.tempDirectoryOutput, "custom.properties");
+		try (FileInputStream inputStream = new FileInputStream(output))
+		{
+			Properties properties = new Properties();
+			properties.load(inputStream);
+			Assert.assertEquals("https://github.com/famaridon/scoped-properties-maven-plugin", properties.getProperty("scoped.properties.git.url"));
+			Assert.assertEquals("https://git.famaridon.com?tab=repositories", properties.getProperty("property.with.equals"));
+			Assert.assertEquals("https://git.famaridon.com?tab=repositories", properties.getProperty("property.key with space"));
+			Assert.assertEquals("ç Σ", properties.getProperty("property.value.with.unicode.char"));
+		} catch (FileNotFoundException e)
+		{
+			Assert.fail("output file not found!");
+		} catch (IOException e)
+		{
+			Assert.fail(e.getMessage());
+		}
 
 	}
 
@@ -80,7 +93,7 @@ public class ScopedPropertiesTest
 	@After
 	public void clean() throws IOException
 	{
-
+		FileUtils.deleteDirectory(this.tempDirectory);
 	}
 
 	public interface SCOPE

@@ -9,10 +9,8 @@ import org.apache.commons.io.filefilter.SuffixFileFilter;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import java.io.File;
-import java.io.FileFilter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.Charset;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
@@ -45,7 +43,8 @@ public class ScopedPropertiesUtils
 		Set<File> outputFileSet = new HashSet<>(propertiesXmlFiles.length);
 		for (File propertiesXml : propertiesXmlFiles)
 		{
-			try
+			try (FileInputStream inputStream = new FileInputStream(propertiesXml);
+				 Reader reader = new InputStreamReader(inputStream, Charset.forName("UTF-8"));)
 			{
 				Wrapper<Property> wrapper = (Wrapper<Property>) unmarshaller.unmarshal(propertiesXml);
 
@@ -56,9 +55,10 @@ public class ScopedPropertiesUtils
 				}
 
 				File outputFile = new File(outputFolder, FilenameUtils.getBaseName(propertiesXml.getName()));
-				try (FileWriter writer = new FileWriter(outputFile))
+				// never use a writer with stream unicode char is encoded.
+				try (FileOutputStream outputStream = new FileOutputStream(outputFile))
 				{
-					properties.store(writer, "Maven plugin building file for scope : " + targetScope);
+					properties.store(outputStream, "Maven plugin building file for scope : " + targetScope);
 				} catch (IOException e)
 				{
 					throw new BuildPropertiesFilesException("can't write properties file", e);
@@ -66,7 +66,7 @@ public class ScopedPropertiesUtils
 
 				outputFileSet.add(outputFile);
 
-			} catch (JAXBException e)
+			} catch (JAXBException | IOException e)
 			{
 				throw new BuildPropertiesFilesException("can't read xml file : " + propertiesXml.getAbsolutePath(), e);
 			}
