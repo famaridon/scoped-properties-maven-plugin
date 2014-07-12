@@ -29,8 +29,10 @@ public class ScopedPropertiesTest
 	protected File propertiesXml;
 	protected int inputFileCount = 0;
 
+	protected Properties properties = new Properties();
+
 	@Before
-	public void inti() throws IOException
+	public void inti() throws IOException, BuildPropertiesFilesException
 	{
 		// build a temp directory using java nio
 
@@ -49,16 +51,7 @@ public class ScopedPropertiesTest
 			IOUtils.copy(getClass().getClassLoader().getResourceAsStream("input/" + CUSTOM_PROPERTIES_XML_FILE_NAME), fileOutputStream);
 			inputFileCount++;
 		}
-	}
 
-	/**
-	 * test the production properties building process.
-	 *
-	 * @throws BuildPropertiesFilesException
-	 */
-	@Test
-	public void buildFileProperties() throws BuildPropertiesFilesException
-	{
 		// run the command
 		Set<File> outputFileSet = ScopedPropertiesUtils.buildPropertiesFiles(tempDirectoryInput, tempDirectoryOutput, SCOPE.PRODUCTION);
 		Assert.assertTrue(outputFileSet.size() == inputFileCount);
@@ -68,12 +61,7 @@ public class ScopedPropertiesTest
 		File output = new File(this.tempDirectoryOutput, "custom.properties");
 		try (FileInputStream inputStream = new FileInputStream(output))
 		{
-			Properties properties = new Properties();
 			properties.load(inputStream);
-			Assert.assertEquals("https://github.com/famaridon/scoped-properties-maven-plugin", properties.getProperty("scoped.properties.git.url"));
-			Assert.assertEquals("https://git.famaridon.com?tab=repositories", properties.getProperty("property.with.equals"));
-			Assert.assertEquals("https://git.famaridon.com?tab=repositories", properties.getProperty("property.key with space"));
-			Assert.assertEquals("ç Σ", properties.getProperty("property.value.with.unicode.char"));
 		} catch (FileNotFoundException e)
 		{
 			Assert.fail("output file not found!");
@@ -81,13 +69,36 @@ public class ScopedPropertiesTest
 		{
 			Assert.fail(e.getMessage());
 		}
+	}
 
+	/**
+	 * test the production properties building process.
+	 *
+	 * @throws BuildPropertiesFilesException
+	 */
+	@Test
+	public void testSimpleProperty()
+	{
+		Assert.assertEquals("scoped-properties-maven-plugin", properties.getProperty("simple.property"));
 	}
 
 	@Test
-	public void buildFilePropertiesWithDefault() throws BuildPropertiesFilesException
+	public void testUnicodeProperty()
 	{
+		Assert.assertEquals("ç Σ", properties.getProperty("property.value.with.unicode.char"));
+	}
 
+	@Test
+	public void testDefaultProperty()
+	{
+		Assert.assertEquals("a default value", properties.getProperty("property.with.default.value"));
+	}
+
+	@Test
+	public void testEscapeCharProperty()
+	{
+		Assert.assertEquals("https://git.famaridon.com?tab=repositories", properties.getProperty("property.with.equals"));
+		Assert.assertEquals("https://git.famaridon.com?tab=repositories", properties.getProperty("property.key with space"));
 	}
 
 	@After
