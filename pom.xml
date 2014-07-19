@@ -4,12 +4,6 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.sonatype.oss</groupId>
-        <artifactId>oss-parent</artifactId>
-        <version>7</version>
-    </parent>
-
     <groupId>com.famaridon</groupId>
     <artifactId>scoped-properties-maven-plugin</artifactId>
     <version>1.0</version>
@@ -24,9 +18,15 @@
         <license>
             <name>The MIT License (MIT)</name>
             <url>http://opensource.org/licenses/MIT</url>
-            <distribution>repo</distribution>
         </license>
     </licenses>
+
+    <developers>
+        <developer>
+            <name>Florent Amaridon</name>
+            <id>famaridon</id>
+        </developer>
+    </developers>
 
     <scm>
         <connection>scm:git:git@github.com:famaridon/scoped-properties-maven-plugin.git</connection>
@@ -34,11 +34,6 @@
         <url>git@github.com:famaridon/scoped-properties-maven-plugin.git</url>
     </scm>
 
-    <developers>
-        <developer>
-            <id>famaridon</id>
-        </developer>
-    </developers>
 
     <dependencies>
         <!-- Maven plugin dependencies -->
@@ -124,11 +119,23 @@
 
     <profiles>
         <profile>
-            <id>sonatype-oss-release-deploy</id>
+            <id>ossrh-deploy</id>
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>1.6.2</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>ossrh</serverId>
+                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                        </configuration>
+                    </plugin>
+
+                    <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
                         <version>2.2.1</version>
                         <executions>
@@ -157,9 +164,6 @@
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
                         <version>1.5</version>
-                        <configuration>
-                            <executable>C:\Program Files (x86)\GNU\GnuPG\pub\gpg.exe</executable>
-                        </configuration>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
