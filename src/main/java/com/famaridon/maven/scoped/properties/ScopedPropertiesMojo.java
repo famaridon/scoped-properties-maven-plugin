@@ -1,5 +1,6 @@
 package com.famaridon.maven.scoped.properties;
 
+import com.famaridon.maven.scoped.properties.beans.ScopedPropertiesConfiguration;
 import com.famaridon.maven.scoped.properties.exceptions.BuildPropertiesFilesException;
 import com.famaridon.maven.scoped.properties.utils.ScopedPropertiesUtils;
 import org.apache.maven.plugin.AbstractMojo;
@@ -44,7 +45,11 @@ public class ScopedPropertiesMojo extends AbstractMojo
 
 		try
 		{
-			ScopedPropertiesUtils.buildPropertiesFiles(this.getPropertiesXmlFolder(), this.getOutputFolder(), this.getTargetScope());
+			ScopedPropertiesConfiguration.Builder configurationBuilder = new ScopedPropertiesConfiguration.Builder();
+			configurationBuilder.appendOutputFolder(this.getOutputFolder());
+			configurationBuilder.appendPropertiesXmlFolder(this.getPropertiesXmlFolder());
+			configurationBuilder.appendTargetScope(this.getTargetScope());
+			ScopedPropertiesUtils.buildPropertiesFiles(configurationBuilder.build());
 		} catch (BuildPropertiesFilesException e)
 		{
 			throw new MojoExecutionException("An exception occur see cause :  ", e);

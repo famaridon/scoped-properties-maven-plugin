@@ -1,5 +1,6 @@
 package com.famaridon.maven.scoped.properties.utils;
 
+import com.famaridon.maven.scoped.properties.beans.ScopedPropertiesConfiguration;
 import com.famaridon.maven.scoped.properties.beans.Wrapper;
 import com.famaridon.maven.scoped.properties.beans.properties.Property;
 import com.famaridon.maven.scoped.properties.exceptions.BuildPropertiesFilesException;
@@ -26,7 +27,7 @@ public class ScopedPropertiesUtils
 	{
 	}
 
-	public static final Set<File> buildPropertiesFiles(File propertiesXmlFolder, File outputFolder, String targetScope) throws BuildPropertiesFilesException
+	public static final Set<File> buildPropertiesFiles(ScopedPropertiesConfiguration configuration) throws BuildPropertiesFilesException
 	{
 
 		JAXBContext jaxbContext;
@@ -40,7 +41,7 @@ public class ScopedPropertiesUtils
 			throw new BuildPropertiesFilesException(e.getMessage(), e);
 		}
 
-		File[] propertiesXmlFiles = propertiesXmlFolder.listFiles((FileFilter) new SuffixFileFilter(".properties.xml"));
+		File[] propertiesXmlFiles = configuration.getPropertiesXmlFolder().listFiles((FileFilter) new SuffixFileFilter(".properties.xml"));
 		Set<File> outputFileSet = new HashSet<>(propertiesXmlFiles.length);
 		for (File propertiesXml : propertiesXmlFiles)
 		{
@@ -52,7 +53,7 @@ public class ScopedPropertiesUtils
 				Properties properties = new Properties();
 				for (Property property : wrapper.getItems())
 				{
-					String value = property.getValues().get(targetScope);
+					String value = property.getValues().get(configuration.getTargetScope());
 					if ( StringUtils.isEmpty(value) )
 					{
 						value = property.getDefaultValue();
@@ -60,11 +61,11 @@ public class ScopedPropertiesUtils
 					properties.setProperty(property.getName(), value);
 				}
 
-				File outputFile = new File(outputFolder, FilenameUtils.getBaseName(propertiesXml.getName()));
+				File outputFile = new File(configuration.getOutputFolder(), FilenameUtils.getBaseName(propertiesXml.getName()));
 				// never use a writer with stream unicode char is encoded.
 				try (FileOutputStream outputStream = new FileOutputStream(outputFile))
 				{
-					properties.store(outputStream, "Maven plugin building file for scope : " + targetScope);
+					properties.store(outputStream, "Maven plugin building file for scope : " + configuration.getTargetScope());
 				} catch (IOException e)
 				{
 					throw new BuildPropertiesFilesException("can't write properties file", e);
