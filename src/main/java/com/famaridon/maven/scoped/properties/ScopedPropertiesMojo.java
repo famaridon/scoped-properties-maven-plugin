@@ -2,7 +2,7 @@ package com.famaridon.maven.scoped.properties;
 
 import com.famaridon.maven.scoped.properties.beans.ScopedPropertiesConfiguration;
 import com.famaridon.maven.scoped.properties.exceptions.BuildPropertiesFilesException;
-import com.famaridon.maven.scoped.properties.utils.ScopedPropertiesUtils;
+import com.famaridon.maven.scoped.properties.tools.ScopedProperties;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -10,6 +10,8 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
 import java.io.File;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by famaridon on 19/05/2014.
@@ -38,6 +40,12 @@ public class ScopedPropertiesMojo extends AbstractMojo
 	@Parameter(property = "targetScope", required = true)
 	protected String targetScope;
 
+	/**
+	 * all packages to scan for custom handlers
+	 */
+	@Parameter(property = "handlerPackages", required = false)
+	protected List<String> handlerPackages;
+
 
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException
@@ -49,7 +57,9 @@ public class ScopedPropertiesMojo extends AbstractMojo
 			configurationBuilder.appendOutputFolder(this.getOutputFolder());
 			configurationBuilder.appendPropertiesXmlFolder(this.getPropertiesXmlFolder());
 			configurationBuilder.appendTargetScope(this.getTargetScope());
-			ScopedPropertiesUtils.buildPropertiesFiles(configurationBuilder.build());
+			configurationBuilder.appendHandlerPackages(this.getHandlerPackages());
+			ScopedProperties scopedProperties = new ScopedProperties(configurationBuilder.build());
+			Set<File> outputFileSet = scopedProperties.buildPropertiesFiles();
 		} catch (BuildPropertiesFilesException e)
 		{
 			throw new MojoExecutionException("An exception occur see cause :  ", e);
@@ -85,5 +95,15 @@ public class ScopedPropertiesMojo extends AbstractMojo
 	public void setTargetScope(String targetScope)
 	{
 		this.targetScope = targetScope;
+	}
+
+	public List<String> getHandlerPackages()
+	{
+		return handlerPackages;
+	}
+
+	public void setHandlerPackages(List<String> handlerPackages)
+	{
+		this.handlerPackages = handlerPackages;
 	}
 }
