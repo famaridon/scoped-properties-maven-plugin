@@ -7,6 +7,8 @@ import com.famaridon.maven.scoped.properties.exceptions.BuildPropertiesFilesExce
 import com.famaridon.maven.scoped.properties.extension.interfaces.ScopedPropertiesHandler;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.reflections.Reflections;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -28,7 +30,7 @@ public class ScopedProperties
 
 	// TODO : the user cant change this value with configuration.
 	public static final int DEFAULT_THREAD_POOL_SIZE = 4;
-
+	protected static final Logger LOG = LoggerFactory.getLogger(ScopedProperties.class);
 	protected final ScopedPropertiesConfiguration configuration;
 	protected final JAXBContext jaxbContext;
 	protected final Set<Class<? extends ScopedPropertiesHandler>> handlerSet;
@@ -69,6 +71,8 @@ public class ScopedProperties
 		while (iterator.hasNext())
 		{
 			Class<? extends ScopedPropertiesHandler> foundClass = iterator.next();
+			LOG.debug("Handler {} found.", foundClass.getName());
+
 			if ( Modifier.isAbstract(foundClass.getModifiers()) )
 			{
 				iterator.remove();
@@ -79,10 +83,12 @@ public class ScopedProperties
 				if ( !Modifier.isPublic(constructor.getModifiers()) )
 				{
 					iterator.remove();
+					LOG.warn("The handler {} is removed default constructor not public.", foundClass.getName());
 				}
 			} catch (NoSuchMethodException e)
 			{
 				iterator.remove();
+				LOG.warn("The handler {} is removed no default constructor found.", foundClass.getName());
 			}
 		}
 		return foundClasses;
@@ -97,9 +103,9 @@ public class ScopedProperties
 
 		for (File propertiesXml : propertiesXmlFiles)
 		{
+			LOG.info("Run thread to build {} file.", propertiesXml.getName());
 			scopedPropertiesResults.offer(executorService.submit(new ScopedPropertiesThread(propertiesXml, this.jaxbContext, this.configuration, this.handlerSet)));
 		}
-
 
 		// after all thread started we get results.
 		try
@@ -115,7 +121,7 @@ public class ScopedProperties
 			{
 				result.cancel(true);
 			}
-			throw new BuildPropertiesFilesException("One file can't be build !", e);
+			throw new BuildPropertiesFilesException("One handler fail stop others !", e);
 		}
 
 		return outputFileSet;

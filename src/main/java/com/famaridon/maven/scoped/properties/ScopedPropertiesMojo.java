@@ -8,6 +8,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.slf4j.impl.StaticLoggerBinder;
 
 import java.io.File;
 import java.util.List;
@@ -50,7 +51,8 @@ public class ScopedPropertiesMojo extends AbstractMojo
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException
 	{
-
+		// bind slf4j to maven log
+		StaticLoggerBinder.getSingleton().setLog(getLog());
 		try
 		{
 			ScopedPropertiesConfiguration.Builder configurationBuilder = new ScopedPropertiesConfiguration.Builder();

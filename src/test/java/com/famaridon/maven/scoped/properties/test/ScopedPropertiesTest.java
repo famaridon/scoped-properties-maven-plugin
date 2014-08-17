@@ -5,9 +5,9 @@ import com.famaridon.maven.scoped.properties.exceptions.BuildPropertiesFilesExce
 import com.famaridon.maven.scoped.properties.tools.ScopedProperties;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.*;
@@ -24,19 +24,18 @@ public class ScopedPropertiesTest
 {
 
 	public static final String CUSTOM_PROPERTIES_XML_FILE_NAME = "custom.properties.xml";
-	protected File tempDirectory;
-	protected File tempDirectoryInput;
-	protected File tempDirectoryOutput;
-	protected File propertiesXml;
-	protected int inputFileCount = 0;
+	protected static File tempDirectory;
+	protected static File tempDirectoryInput;
+	protected static File tempDirectoryOutput;
+	protected static File propertiesXml;
+	protected static int inputFileCount = 0;
 
-	protected Properties properties = new Properties();
+	protected static Properties properties = new Properties();
 
-	@Before
-	public void inti() throws IOException, BuildPropertiesFilesException
+	@BeforeClass
+	public static void inti() throws IOException, BuildPropertiesFilesException
 	{
 		// build a temp directory using java nio
-
 		tempDirectory = new File("./target/test/");
 		tempDirectory.mkdirs();
 		tempDirectoryInput = new File(tempDirectory, "input");
@@ -49,7 +48,7 @@ public class ScopedPropertiesTest
 		propertiesXml = new File(tempDirectoryInput, CUSTOM_PROPERTIES_XML_FILE_NAME);
 		try (FileOutputStream fileOutputStream = new FileOutputStream(propertiesXml))
 		{
-			IOUtils.copy(getClass().getClassLoader().getResourceAsStream("input/" + CUSTOM_PROPERTIES_XML_FILE_NAME), fileOutputStream);
+			IOUtils.copy(ScopedPropertiesTest.class.getClassLoader().getResourceAsStream("input/" + CUSTOM_PROPERTIES_XML_FILE_NAME), fileOutputStream);
 			inputFileCount++;
 		}
 
@@ -64,7 +63,7 @@ public class ScopedPropertiesTest
 
 		// the output file name should be custom.properties
 		// we can't compare file byte per byte because properties output the timestamp.
-		File output = new File(this.tempDirectoryOutput, "custom.properties");
+		File output = new File(tempDirectoryOutput, "custom.properties");
 		try (FileInputStream inputStream = new FileInputStream(output))
 		{
 			properties.load(inputStream);
@@ -75,6 +74,12 @@ public class ScopedPropertiesTest
 		{
 			Assert.fail(e.getMessage());
 		}
+	}
+
+	@AfterClass
+	public static void clean() throws IOException
+	{
+		FileUtils.deleteDirectory(tempDirectory);
 	}
 
 	/**
@@ -105,12 +110,6 @@ public class ScopedPropertiesTest
 	{
 		Assert.assertEquals("https://git.famaridon.com?tab=repositories", properties.getProperty("property.with.equals"));
 		Assert.assertEquals("https://git.famaridon.com?tab=repositories", properties.getProperty("property.key with space"));
-	}
-
-	@After
-	public void clean() throws IOException
-	{
-		FileUtils.deleteDirectory(this.tempDirectory);
 	}
 
 }
