@@ -14,30 +14,25 @@ import java.util.Map;
  * @author famaridon
  */
 @XmlType(namespace = "http://famaridon.com/properties")
-public class EnvironmentAdapter extends XmlAdapter<Environment, Map<String, String>>
-{
+public class EnvironmentAdapter extends XmlAdapter<Environment, Map<String, String>> {
 
 	@Override
-	public Map<String, String> unmarshal(Environment adaptedMap) throws Exception
-	{
+	public Map<String, String> unmarshal(Environment adaptedMap) throws Exception {
 		Map<String, String> map = new HashMap<>();
-		for (Entry entry : adaptedMap.entry)
-		{
-			map.put(entry.key, entry.value);
+		for (EnvironmentEntry environmentEntry : adaptedMap.environmentEntry) {
+			map.put(environmentEntry.key, environmentEntry.value);
 		}
 		return map;
 	}
 
 	@Override
-	public Environment marshal(Map<String, String> map) throws Exception
-	{
+	public Environment marshal(Map<String, String> map) throws Exception {
 		Environment adaptedMap = new Environment();
-		for (Map.Entry<String, String> mapEntry : map.entrySet())
-		{
-			Entry entry = new Entry();
-			entry.key = mapEntry.getKey();
-			entry.value = mapEntry.getValue();
-			adaptedMap.entry.add(entry);
+		for (Map.Entry<String, String> mapEntry : map.entrySet()) {
+			EnvironmentEntry environmentEntry = new EnvironmentEntry();
+			environmentEntry.key = mapEntry.getKey();
+			environmentEntry.value = mapEntry.getValue();
+			adaptedMap.environmentEntry.add(environmentEntry);
 		}
 		return adaptedMap;
 	}

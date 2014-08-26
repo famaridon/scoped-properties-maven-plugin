@@ -9,8 +9,7 @@ import java.io.File;
 /**
  * Created by famaridon on 09/08/2014.
  */
-public interface ScopedPropertiesHandler
-{
+public interface ScopedPropertiesHandler<F, P> {
 
 	/**
 	 * call at the begin of each .properties.xml parsing
@@ -18,17 +17,17 @@ public interface ScopedPropertiesHandler
 	 * @param configuration the scoped properties input configuration.
 	 * @param currentFile   the current parsing .properties.xml file
 	 */
-	public void startDocument(ScopedPropertiesConfiguration configuration, File currentFile) throws BuildPropertiesFilesException;
+	public void startDocument(ScopedPropertiesConfiguration configuration, F fileHandlerConfiguration, File currentFile) throws BuildPropertiesFilesException;
 
 	/**
 	 * call at any property add
 	 */
-	public void startProperty(Property property) throws BuildPropertiesFilesException;
+	public void startProperty(Property property, P propertyHandlerConfiguration) throws BuildPropertiesFilesException;
 
 	/**
 	 * call after any property add
 	 */
-	public void endProperty(Property property) throws BuildPropertiesFilesException;
+	public void endProperty(Property property, P propertyHandlerConfiguration) throws BuildPropertiesFilesException;
 
 	/**
 	 * call at the end of each .properties.xml parsing

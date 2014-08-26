@@ -22,8 +22,7 @@ import java.util.Set;
  * @author famaridon
  */
 
-public class MultiThreadScopedPropertiesTest
-{
+public class MultiThreadScopedPropertiesTest {
 
 	public static final String CUSTOM_PROPERTIES_XML_FILE_NAME = "custom.properties.xml";
 	protected File tempDirectory;
@@ -34,8 +33,7 @@ public class MultiThreadScopedPropertiesTest
 	protected Properties properties = new Properties();
 
 	@Before
-	public void inti() throws IOException, BuildPropertiesFilesException
-	{
+	public void inti() throws IOException, BuildPropertiesFilesException {
 		// build a temp directory using java nio
 
 		tempDirectory = new File("./target/test/");
@@ -48,11 +46,9 @@ public class MultiThreadScopedPropertiesTest
 		// copy the resource custom.properties.xml into user temps directory to test in real case
 		// WARNING : if you copy other file all test should be updated
 
-		for (int i = 0; i < 25; i++)
-		{
+		for (int i = 0; i < 25; i++) {
 			File propertiesXml = new File(tempDirectoryInput, "file" + i + ".properties.xml");
-			try (FileOutputStream fileOutputStream = new FileOutputStream(propertiesXml))
-			{
+			try (FileOutputStream fileOutputStream = new FileOutputStream(propertiesXml)) {
 				IOUtils.copy(getClass().getClassLoader().getResourceAsStream("input/" + CUSTOM_PROPERTIES_XML_FILE_NAME), fileOutputStream);
 				inputFileCount++;
 			}
@@ -73,14 +69,12 @@ public class MultiThreadScopedPropertiesTest
 	 * @throws com.famaridon.maven.scoped.properties.exceptions.BuildPropertiesFilesException
 	 */
 	@Test
-	public void testFileCount()
-	{
+	public void testFileCount() {
 		Assert.assertTrue(tempDirectoryOutput.listFiles().length == inputFileCount);
 	}
 
 	@After
-	public void clean() throws IOException
-	{
+	public void clean() throws IOException {
 		FileUtils.deleteDirectory(this.tempDirectory);
 	}
 

@@ -6,11 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by famaridon on 12/07/2014.
+ * Created by famaridon on 20/08/2014.
  */
 @XmlType(namespace = "http://famaridon.com/properties")
-public class Environment {
-	@XmlElement(name = "environment", required = true)
-	public List<EnvironmentEntry> environmentEntry = new ArrayList<>();
-
+public class HandlerConfiguration {
+	@XmlElement(name = "configuration", required = true)
+	public List<HandlerConfigurationEntry> handlerConfigurationEntries = new ArrayList<>();
 }

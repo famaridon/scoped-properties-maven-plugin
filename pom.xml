@@ -11,6 +11,10 @@
 
     <name>Scoped properties Maven plugin</name>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
     <description>a simple maven plugin to handle multi scope development environments</description>
     <url>https://github.com/famaridon/scoped-properties-maven-plugin</url>
 

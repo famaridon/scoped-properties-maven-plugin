@@ -14,8 +14,7 @@ import java.util.Properties;
 /**
  * Created by famaridon on 13/08/2014.
  */
-public class PropertiesFileHandler implements ScopedPropertiesHandler
-{
+public class PropertiesFileHandler implements ScopedPropertiesHandler<Object, Object> {
 
 	private Properties properties;
 	private ScopedPropertiesConfiguration configuration;
@@ -28,8 +27,7 @@ public class PropertiesFileHandler implements ScopedPropertiesHandler
 	 * @param currentFile   the current parsing .properties.xml file
 	 */
 	@Override
-	public void startDocument(ScopedPropertiesConfiguration configuration, File currentFile)
-	{
+	public void startDocument(ScopedPropertiesConfiguration configuration, Object fileHandlerConfiguration, File currentFile) {
 		this.properties = new Properties();
 		this.configuration = configuration;
 		this.currentFile = currentFile;
@@ -39,11 +37,9 @@ public class PropertiesFileHandler implements ScopedPropertiesHandler
 	 * call at any property add
 	 */
 	@Override
-	public void startProperty(Property property)
-	{
+	public void startProperty(Property property, Object propertyHandlerConfiguration) {
 		String value = property.getValues().get(configuration.getTargetScope());
-		if ( StringUtils.isEmpty(value) )
-		{
+		if (StringUtils.isEmpty(value)) {
 			value = property.getDefaultValue();
 		}
 		properties.setProperty(property.getName(), value);
@@ -53,8 +49,7 @@ public class PropertiesFileHandler implements ScopedPropertiesHandler
 	 * call after any property add
 	 */
 	@Override
-	public void endProperty(Property property)
-	{
+	public void endProperty(Property property, Object propertyHandlerConfiguration) {
 
 	}
 
@@ -62,15 +57,12 @@ public class PropertiesFileHandler implements ScopedPropertiesHandler
 	 * call at the end of each .properties.xml parsing
 	 */
 	@Override
-	public File endDocument(String fileBaseName) throws BuildPropertiesFilesException
-	{
+	public File endDocument(String fileBaseName) throws BuildPropertiesFilesException {
 		File outputFile = new File(configuration.getOutputFolder(), fileBaseName);
 		// never use a writer with stream unicode char is encoded.
-		try (FileOutputStream outputStream = new FileOutputStream(outputFile))
-		{
+		try (FileOutputStream outputStream = new FileOutputStream(outputFile)) {
 			properties.store(outputStream, "Maven plugin building file for scope : " + configuration.getTargetScope());
-		} catch (IOException e)
-		{
+		} catch (IOException e) {
 			throw new BuildPropertiesFilesException("can't write properties file", e);
 		}
 		return outputFile;

@@ -20,8 +20,7 @@ import java.util.Set;
  * @author famaridon
  */
 
-public class ScopedPropertiesTest
-{
+public class ScopedPropertiesTest {
 
 	public static final String CUSTOM_PROPERTIES_XML_FILE_NAME = "custom.properties.xml";
 	protected static File tempDirectory;
@@ -33,8 +32,7 @@ public class ScopedPropertiesTest
 	protected static Properties properties = new Properties();
 
 	@BeforeClass
-	public static void inti() throws IOException, BuildPropertiesFilesException
-	{
+	public static void inti() throws IOException, BuildPropertiesFilesException {
 		// build a temp directory using java nio
 		tempDirectory = new File("./target/test/");
 		tempDirectory.mkdirs();
@@ -46,8 +44,7 @@ public class ScopedPropertiesTest
 		// copy the resource custom.properties.xml into user temps directory to test in real case
 		// WARNING : if you copy other file all test should be updated
 		propertiesXml = new File(tempDirectoryInput, CUSTOM_PROPERTIES_XML_FILE_NAME);
-		try (FileOutputStream fileOutputStream = new FileOutputStream(propertiesXml))
-		{
+		try (FileOutputStream fileOutputStream = new FileOutputStream(propertiesXml)) {
 			IOUtils.copy(ScopedPropertiesTest.class.getClassLoader().getResourceAsStream("input/" + CUSTOM_PROPERTIES_XML_FILE_NAME), fileOutputStream);
 			inputFileCount++;
 		}
@@ -64,21 +61,17 @@ public class ScopedPropertiesTest
 		// the output file name should be custom.properties
 		// we can't compare file byte per byte because properties output the timestamp.
 		File output = new File(tempDirectoryOutput, "custom.properties");
-		try (FileInputStream inputStream = new FileInputStream(output))
-		{
+		try (FileInputStream inputStream = new FileInputStream(output)) {
 			properties.load(inputStream);
-		} catch (FileNotFoundException e)
-		{
+		} catch (FileNotFoundException e) {
 			Assert.fail("output file not found!");
-		} catch (IOException e)
-		{
+		} catch (IOException e) {
 			Assert.fail(e.getMessage());
 		}
 	}
 
 	@AfterClass
-	public static void clean() throws IOException
-	{
+	public static void clean() throws IOException {
 		FileUtils.deleteDirectory(tempDirectory);
 	}
 
@@ -88,26 +81,22 @@ public class ScopedPropertiesTest
 	 * @throws BuildPropertiesFilesException
 	 */
 	@Test
-	public void testSimpleProperty()
-	{
+	public void testSimpleProperty() {
 		Assert.assertEquals("scoped-properties-maven-plugin", properties.getProperty("simple.property"));
 	}
 
 	@Test
-	public void testUnicodeProperty()
-	{
+	public void testUnicodeProperty() {
 		Assert.assertEquals("ç Σ", properties.getProperty("property.value.with.unicode.char"));
 	}
 
 	@Test
-	public void testDefaultProperty()
-	{
+	public void testDefaultProperty() {
 		Assert.assertEquals("a default value", properties.getProperty("property.with.default.value"));
 	}
 
 	@Test
-	public void testEscapeCharProperty()
-	{
+	public void testEscapeCharProperty() {
 		Assert.assertEquals("https://git.famaridon.com?tab=repositories", properties.getProperty("property.with.equals"));
 		Assert.assertEquals("https://git.famaridon.com?tab=repositories", properties.getProperty("property.key with space"));
 	}

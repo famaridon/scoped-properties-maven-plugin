@@ -20,8 +20,7 @@ import java.util.Set;
  * @author famaridon
  */
 @Mojo(name = "build-properties-files", threadSafe = false, requiresProject = false, requiresDirectInvocation = true)
-public class ScopedPropertiesMojo extends AbstractMojo
-{
+public class ScopedPropertiesMojo extends AbstractMojo {
 
 	/**
 	 * specify the input XML descriptor folder
@@ -49,12 +48,10 @@ public class ScopedPropertiesMojo extends AbstractMojo
 
 
 	@Override
-	public void execute() throws MojoExecutionException, MojoFailureException
-	{
+	public void execute() throws MojoExecutionException, MojoFailureException {
 		// bind slf4j to maven log
 		StaticLoggerBinder.getSingleton().setLog(getLog());
-		try
-		{
+		try {
 			ScopedPropertiesConfiguration.Builder configurationBuilder = new ScopedPropertiesConfiguration.Builder();
 			configurationBuilder.appendOutputFolder(this.getOutputFolder());
 			configurationBuilder.appendPropertiesXmlFolder(this.getPropertiesXmlFolder());
@@ -62,50 +59,41 @@ public class ScopedPropertiesMojo extends AbstractMojo
 			configurationBuilder.appendHandlerPackages(this.getHandlerPackages());
 			ScopedProperties scopedProperties = new ScopedProperties(configurationBuilder.build());
 			Set<File> outputFileSet = scopedProperties.buildPropertiesFiles();
-		} catch (BuildPropertiesFilesException e)
-		{
+		} catch (BuildPropertiesFilesException e) {
 			throw new MojoExecutionException("An exception occur see cause :  ", e);
 		}
 
 	}
 
-	public File getPropertiesXmlFolder()
-	{
+	public File getPropertiesXmlFolder() {
 		return propertiesXmlFolder;
 	}
 
-	public void setPropertiesXmlFolder(File propertiesXmlFolder)
-	{
+	public void setPropertiesXmlFolder(File propertiesXmlFolder) {
 		this.propertiesXmlFolder = propertiesXmlFolder;
 	}
 
-	public File getOutputFolder()
-	{
+	public File getOutputFolder() {
 		return outputFolder;
 	}
 
-	public void setOutputFolder(File outputFolder)
-	{
+	public void setOutputFolder(File outputFolder) {
 		this.outputFolder = outputFolder;
 	}
 
-	public String getTargetScope()
-	{
+	public String getTargetScope() {
 		return targetScope;
 	}
 
-	public void setTargetScope(String targetScope)
-	{
+	public void setTargetScope(String targetScope) {
 		this.targetScope = targetScope;
 	}
 
-	public List<String> getHandlerPackages()
-	{
+	public List<String> getHandlerPackages() {
 		return handlerPackages;
 	}
 
-	public void setHandlerPackages(List<String> handlerPackages)
-	{
+	public void setHandlerPackages(List<String> handlerPackages) {
 		this.handlerPackages = handlerPackages;
 	}
 }
