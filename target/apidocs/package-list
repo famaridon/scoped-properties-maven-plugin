@@ -1,9 +1,0 @@
-com.famaridon.maven.scoped.properties
-com.famaridon.maven.scoped.properties.annotations
-com.famaridon.maven.scoped.properties.beans
-com.famaridon.maven.scoped.properties.beans.adapter
-com.famaridon.maven.scoped.properties.beans.properties
-com.famaridon.maven.scoped.properties.exceptions
-com.famaridon.maven.scoped.properties.extension.defaults
-com.famaridon.maven.scoped.properties.extension.interfaces
-com.famaridon.maven.scoped.properties.tools
