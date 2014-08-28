@@ -8,6 +8,9 @@ import org.junit.Test;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 
 /**
  * Created by famaridon on 19/05/2014.
@@ -39,6 +42,15 @@ public class JAXBBeansTest {
 		fileDescriptor.getHandlersConfiguration().put("a.class.Name", configuration);
 
 		marshaller.marshal(fileDescriptor, System.out);
+
+
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		marshaller.marshal(fileDescriptor, out);
+
+		Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+		FileDescriptor parsed = (FileDescriptor) unmarshaller.unmarshal(new ByteArrayInputStream(out.toByteArray()));
+
+		System.out.println(parsed.getHandlersConfiguration());
 
 	}
 

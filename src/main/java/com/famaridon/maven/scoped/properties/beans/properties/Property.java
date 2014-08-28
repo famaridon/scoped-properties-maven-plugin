@@ -60,4 +60,7 @@ public class Property {
 		return handlersConfiguration;
 	}
 
+	public void setHandlersConfiguration(Map<String, Object> handlersConfiguration) {
+		this.handlersConfiguration = handlersConfiguration;
+	}
 }

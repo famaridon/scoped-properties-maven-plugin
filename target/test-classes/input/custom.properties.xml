@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<properties>
+    <property name="simple.property">
+        <values>
+            <environment scope="development">
+                <value>scoped-properties-maven-plugin-development</value>
+            </environment>
+            <environment scope="production">
+                <value>scoped-properties-maven-plugin</value>
+            </environment>
+        </values>
+    </property>
+    <property name="property.with.equals">
+        <values>
+            <environment scope="development">
+                <value>https://git.famaridon.com?tab=repositories</value>
+            </environment>
+            <environment scope="production">
+                <value>https://git.famaridon.com?tab=repositories</value>
+            </environment>
+        </values>
+    </property>
+    <property name="property.key with space">
+        <values>
+            <environment scope="development">
+                <value>https://git.famaridon.com?tab=repositories</value>
+            </environment>
+            <environment scope="production">
+                <value>https://git.famaridon.com?tab=repositories</value>
+            </environment>
+        </values>
+    </property>
+    <property name="property.value.with.unicode.char">
+        <values>
+            <environment scope="development">
+                <value>ç Σ</value>
+            </environment>
+            <environment scope="production">
+                <value>ç Σ</value>
+            </environment>
+        </values>
+    </property>
+    <property name="property.with.default.value">
+        <default-value>a default value</default-value>
+        <values>
+            <environment scope="development">
+                <value>a development value</value>
+            </environment>
+        </values>
+    </property>
+</properties>

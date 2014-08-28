@@ -47,4 +47,12 @@ public class FileDescriptor {
 	public Map<String, Object> getHandlersConfiguration() {
 		return handlersConfiguration;
 	}
+
+	public void setHandlersConfiguration(Map<String, Object> handlersConfiguration) {
+		this.handlersConfiguration = handlersConfiguration;
+	}
+
+	public void setItems(List<Property> items) {
+		this.items = items;
+	}
 }
