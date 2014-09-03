@@ -36,7 +36,6 @@ public class ScopedProperties {
 	protected static final Logger LOG = LoggerFactory.getLogger(ScopedProperties.class);
 	protected final ScopedPropertiesConfiguration configuration;
 	protected final JAXBContext jaxbContext;
-	protected final Set<Class<? extends ScopedPropertiesHandler>> handlerSet;
 
 	public ScopedProperties(ScopedPropertiesConfiguration configuration) {
 		// load any configuration.
@@ -47,8 +46,9 @@ public class ScopedProperties {
 
 		// load default handlers
 		Reflections defaultReflections = new Reflections(DEFAULT_HANDLER_PACKAGE);
-		Set<Class<? extends ScopedPropertiesHandler>> foundClasses = getHandlers(defaultReflections);
-		handlerSet.addAll(foundClasses);
+		handlerSet.addAll(getHandlers(defaultReflections));
+		jaxbClassesToBeBound.addAll(getJaxbClasses(defaultReflections));
+
 		// add default jaxb classes to be bounds
 		jaxbClassesToBeBound.add(FileDescriptor.class);
 		jaxbClassesToBeBound.add(Property.class);
@@ -60,7 +60,7 @@ public class ScopedProperties {
 			jaxbClassesToBeBound.addAll(getJaxbClasses(customReflections));
 		}
 
-		this.handlerSet = Collections.unmodifiableSet(handlerSet);
+		this.configuration.setHandlerClassSet(Collections.unmodifiableSet(handlerSet));
 
 		try {
 			this.jaxbContext = JAXBContext.newInstance(jaxbClassesToBeBound.toArray(new Class<?>[jaxbClassesToBeBound.size()]));
@@ -109,7 +109,7 @@ public class ScopedProperties {
 
 		for (File propertiesXml : propertiesXmlFiles) {
 			LOG.info("Run thread to build {} file.", propertiesXml.getName());
-			scopedPropertiesResults.offer(executorService.submit(new ScopedPropertiesThread(propertiesXml, this.jaxbContext, this.configuration, this.handlerSet)));
+			scopedPropertiesResults.offer(executorService.submit(new ScopedPropertiesThread(propertiesXml, this.jaxbContext, this.configuration.clone())));
 		}
 
 		// after all thread started we get results.

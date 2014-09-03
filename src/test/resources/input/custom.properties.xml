@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <properties>
+    <handlersConfiguration>
+        <configuration handler="properties">
+            <propertiesRootConfiguration prefix="com.famaridon.test"/>
+        </configuration>
+    </handlersConfiguration>
     <property name="simple.property">
         <values>
             <environment scope="development">

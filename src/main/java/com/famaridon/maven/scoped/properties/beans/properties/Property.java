@@ -2,6 +2,8 @@ package com.famaridon.maven.scoped.properties.beans.properties;
 
 import com.famaridon.maven.scoped.properties.beans.adapter.EnvironmentAdapter;
 import com.famaridon.maven.scoped.properties.beans.adapter.HandlerConfigurationAdapter;
+import com.famaridon.maven.scoped.properties.extension.defaults.configuration.beans.PropertiesRootConfiguration;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
@@ -35,6 +37,15 @@ public class Property {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getKey(PropertiesRootConfiguration propertiesRootConfiguration) {
+		StringBuilder propertyName = new StringBuilder();
+		if (StringUtils.isNotEmpty(propertiesRootConfiguration.getPrefix())) {
+			propertyName.append(propertiesRootConfiguration.getPrefix()).append('.');
+		}
+		propertyName.append(this.getName());
+		return propertyName.toString();
 	}
 
 	@XmlJavaTypeAdapter(EnvironmentAdapter.class)

@@ -1,8 +1,10 @@
 package com.famaridon.maven.scoped.properties.extension.defaults;
 
+import com.famaridon.maven.scoped.properties.annotations.CustomHandler;
 import com.famaridon.maven.scoped.properties.beans.ScopedPropertiesConfiguration;
 import com.famaridon.maven.scoped.properties.beans.properties.Property;
 import com.famaridon.maven.scoped.properties.exceptions.BuildPropertiesFilesException;
+import com.famaridon.maven.scoped.properties.extension.defaults.configuration.beans.PropertiesRootConfiguration;
 import com.famaridon.maven.scoped.properties.extension.interfaces.ScopedPropertiesHandler;
 import org.apache.commons.lang3.StringUtils;
 
@@ -14,10 +16,12 @@ import java.util.Properties;
 /**
  * Created by famaridon on 13/08/2014.
  */
-public class PropertiesFileHandler implements ScopedPropertiesHandler<Object, Object> {
+@CustomHandler(shortName = "properties")
+public class PropertiesFileHandler implements ScopedPropertiesHandler<PropertiesRootConfiguration, Object> {
 
 	private Properties properties;
 	private ScopedPropertiesConfiguration configuration;
+	private PropertiesRootConfiguration fileHandlerConfiguration;
 	private File currentFile;
 
 	/**
@@ -27,10 +31,11 @@ public class PropertiesFileHandler implements ScopedPropertiesHandler<Object, Ob
 	 * @param currentFile   the current parsing .properties.xml file
 	 */
 	@Override
-	public void startDocument(ScopedPropertiesConfiguration configuration, Object fileHandlerConfiguration, File currentFile) {
+	public void startDocument(ScopedPropertiesConfiguration configuration, PropertiesRootConfiguration fileHandlerConfiguration, File currentFile) {
 		this.properties = new Properties();
 		this.configuration = configuration;
 		this.currentFile = currentFile;
+		this.fileHandlerConfiguration = fileHandlerConfiguration;
 	}
 
 	/**
@@ -42,8 +47,9 @@ public class PropertiesFileHandler implements ScopedPropertiesHandler<Object, Ob
 		if (StringUtils.isEmpty(value)) {
 			value = property.getDefaultValue();
 		}
-		properties.setProperty(property.getName(), value);
+		properties.setProperty(property.getKey(this.fileHandlerConfiguration), value);
 	}
+
 
 	/**
 	 * call after any property add

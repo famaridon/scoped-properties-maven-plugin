@@ -82,23 +82,23 @@ public class ScopedPropertiesTest {
 	 */
 	@Test
 	public void testSimpleProperty() {
-		Assert.assertEquals("scoped-properties-maven-plugin", properties.getProperty("simple.property"));
+		Assert.assertEquals("scoped-properties-maven-plugin", properties.getProperty("com.famaridon.test.simple.property"));
 	}
 
 	@Test
 	public void testUnicodeProperty() {
-		Assert.assertEquals("ç Σ", properties.getProperty("property.value.with.unicode.char"));
+		Assert.assertEquals("ç Σ", properties.getProperty("com.famaridon.test.property.value.with.unicode.char"));
 	}
 
 	@Test
 	public void testDefaultProperty() {
-		Assert.assertEquals("a default value", properties.getProperty("property.with.default.value"));
+		Assert.assertEquals("a default value", properties.getProperty("com.famaridon.test.property.with.default.value"));
 	}
 
 	@Test
 	public void testEscapeCharProperty() {
-		Assert.assertEquals("https://git.famaridon.com?tab=repositories", properties.getProperty("property.with.equals"));
-		Assert.assertEquals("https://git.famaridon.com?tab=repositories", properties.getProperty("property.key with space"));
+		Assert.assertEquals("https://git.famaridon.com?tab=repositories", properties.getProperty("com.famaridon.test.property.with.equals"));
+		Assert.assertEquals("https://git.famaridon.com?tab=repositories", properties.getProperty("com.famaridon.test.property.key with space"));
 	}
 
 }

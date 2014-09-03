@@ -1,13 +1,11 @@
 package com.famaridon.maven.scoped.properties.tools;
 
-import com.famaridon.maven.scoped.properties.annotations.CustomHandler;
 import com.famaridon.maven.scoped.properties.beans.FileDescriptor;
 import com.famaridon.maven.scoped.properties.beans.ScopedPropertiesConfiguration;
 import com.famaridon.maven.scoped.properties.beans.properties.Property;
 import com.famaridon.maven.scoped.properties.exceptions.BuildPropertiesFilesException;
 import com.famaridon.maven.scoped.properties.extension.interfaces.ScopedPropertiesHandler;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -27,8 +25,9 @@ public class ScopedPropertiesThread implements Callable<List<File>> {
 	private final ScopedPropertiesConfiguration configuration;
 	protected Set<ScopedPropertiesHandler> handlerSet;
 	protected Map<Class<?>, String> handlerNameMap;
+	private FileDescriptor fileDescriptor;
 
-	public ScopedPropertiesThread(File propertiesXml, JAXBContext jaxbContext, ScopedPropertiesConfiguration configuration, Set<Class<? extends ScopedPropertiesHandler>> handlerClassSet) throws BuildPropertiesFilesException {
+	public ScopedPropertiesThread(File propertiesXml, JAXBContext jaxbContext, ScopedPropertiesConfiguration configuration) throws BuildPropertiesFilesException {
 		this.propertiesXml = propertiesXml;
 		try {
 			this.unmarshaller = jaxbContext.createUnmarshaller();
@@ -36,20 +35,10 @@ public class ScopedPropertiesThread implements Callable<List<File>> {
 			throw new BuildPropertiesFilesException("Unhandled JAXB exception : ", e);
 		}
 		this.configuration = configuration;
+		this.configuration.setCurrentThread(this);
 		this.handlerSet = new HashSet<>();
 		this.handlerNameMap = new HashMap<>();
-		for (Class<? extends ScopedPropertiesHandler> handler : handlerClassSet) {
-
-			// read annotation's information
-			CustomHandler customHandler = handler.getAnnotation(CustomHandler.class);
-			String handelConfigurationKey;
-			if (customHandler == null || StringUtils.isEmpty(customHandler.shortName())) {
-				handelConfigurationKey = handler.getName();
-			} else {
-				handelConfigurationKey = customHandler.shortName();
-			}
-			handlerNameMap.put(handler, handelConfigurationKey);
-
+		for (Class<? extends ScopedPropertiesHandler> handler : configuration.getHandlerClassSet()) {
 			// create new instance for each handler.
 			try {
 				Constructor<? extends ScopedPropertiesHandler> constructor = handler.getConstructor();
@@ -64,25 +53,22 @@ public class ScopedPropertiesThread implements Callable<List<File>> {
 	@Override
 	public List<File> call() throws BuildPropertiesFilesException {
 		try {
-			FileDescriptor fileDescriptor = (FileDescriptor) this.unmarshaller.unmarshal(propertiesXml);
+			fileDescriptor = (FileDescriptor) this.unmarshaller.unmarshal(propertiesXml);
 
 			for (ScopedPropertiesHandler scopedPropertiesHandler : handlerSet) {
-				scopedPropertiesHandler.startDocument(this.configuration, fileDescriptor.getHandlersConfiguration().get(handlerNameMap.get(scopedPropertiesHandler.getClass())), this.propertiesXml);
+				scopedPropertiesHandler.startDocument(this.configuration, this.configuration.getHandlersConfiguration(scopedPropertiesHandler.getClass()), this.propertiesXml);
 			}
 
 			for (Property property : fileDescriptor.getItems()) {
 
 				for (ScopedPropertiesHandler scopedPropertiesHandler : handlerSet) {
-					Object propertyHandlerConfiguration = property.getHandlersConfiguration().get(handlerNameMap.get(scopedPropertiesHandler.getClass()));
-					scopedPropertiesHandler.startProperty(property, propertyHandlerConfiguration);
-
+					scopedPropertiesHandler.startProperty(property, this.configuration.getPropertyConfiguration(property, scopedPropertiesHandler.getClass()));
 				}
 				for (ScopedPropertiesHandler scopedPropertiesHandler : handlerSet) {
-					Object propertyHandlerConfiguration = property.getHandlersConfiguration().get(handlerNameMap.get(scopedPropertiesHandler.getClass()));
-					scopedPropertiesHandler.endProperty(property, propertyHandlerConfiguration);
-
+					scopedPropertiesHandler.endProperty(property, this.configuration.getPropertyConfiguration(property, scopedPropertiesHandler.getClass()));
 				}
 			}
+
 			List<File> outputFileList = new ArrayList<>(this.handlerSet.size());
 			String baseName = FilenameUtils.getBaseName(propertiesXml.getName());
 			for (ScopedPropertiesHandler scopedPropertiesHandler : handlerSet) {
@@ -95,5 +81,9 @@ public class ScopedPropertiesThread implements Callable<List<File>> {
 		} catch (JAXBException e) {
 			throw new BuildPropertiesFilesException("can't read xml file : " + propertiesXml.getAbsolutePath(), e);
 		}
+	}
+
+	public FileDescriptor getFileDescriptor() {
+		return fileDescriptor;
 	}
 }
