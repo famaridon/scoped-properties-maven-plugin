@@ -9,6 +9,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class PropertiesRootConfiguration {
 
+	/**
+	 * not mandatory can be used to specify a prefix for all property key.
+	 */
 	protected String prefix;
 
 	@XmlAttribute

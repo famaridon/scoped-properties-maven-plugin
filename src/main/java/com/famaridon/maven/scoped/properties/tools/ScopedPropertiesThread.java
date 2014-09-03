@@ -17,6 +17,8 @@ import java.util.*;
 import java.util.concurrent.Callable;
 
 /**
+ * One thread is run for each descriptor file.
+ * <p/>
  * Created by famaridon on 11/08/2014.
  */
 public class ScopedPropertiesThread implements Callable<List<File>> {
@@ -27,7 +29,16 @@ public class ScopedPropertiesThread implements Callable<List<File>> {
 	protected Map<Class<?>, String> handlerNameMap;
 	private FileDescriptor fileDescriptor;
 
-	public ScopedPropertiesThread(File propertiesXml, JAXBContext jaxbContext, ScopedPropertiesConfiguration configuration) throws BuildPropertiesFilesException {
+	/**
+	 * Read / finalize the configuration object.<br>
+	 * Create the {@link javax.xml.bind.Unmarshaller} (the {@link javax.xml.bind.JAXBContext} is not thread safe)
+	 *
+	 * @param propertiesXml the descriptor file.
+	 * @param jaxbContext   the jaxbContext not stored.
+	 * @param configuration a clone of the configuration bean (it can be modified)
+	 * @throws BuildPropertiesFilesException
+	 */
+	public ScopedPropertiesThread(File propertiesXml, final JAXBContext jaxbContext, ScopedPropertiesConfiguration configuration) throws BuildPropertiesFilesException {
 		this.propertiesXml = propertiesXml;
 		try {
 			this.unmarshaller = jaxbContext.createUnmarshaller();

@@ -7,6 +7,7 @@ import com.famaridon.maven.scoped.properties.exceptions.BuildPropertiesFilesExce
 import java.io.File;
 
 /**
+ * This interface define the Scoped properties handler.
  * Created by famaridon on 09/08/2014.
  */
 public interface ScopedPropertiesHandler<F, P> {

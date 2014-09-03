@@ -26,15 +26,28 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 /**
+ * The main class. She scan configuration to get handlers and XmlBeans, and it will run all thread.
  * Created by famaridon on 10/07/2014.
  */
 public class ScopedProperties {
 
-	// TODO : the user cant change this value with configuration.
+	/**
+	 * TODO : the user cant change this value with configuration.
+	 * How many thread run in same time.
+	 */
 	public static final int DEFAULT_THREAD_POOL_SIZE = 4;
+	/**
+	 * the default handler package
+	 */
 	public static final String DEFAULT_HANDLER_PACKAGE = "com.famaridon.maven.scoped.properties.extension.defaults";
 	protected static final Logger LOG = LoggerFactory.getLogger(ScopedProperties.class);
+	/**
+	 * the running configuration.
+	 */
 	protected final ScopedPropertiesConfiguration configuration;
+	/**
+	 * the initilized JAXBContext
+	 */
 	protected final JAXBContext jaxbContext;
 
 	public ScopedProperties(ScopedPropertiesConfiguration configuration) {
@@ -69,6 +82,12 @@ public class ScopedProperties {
 		}
 	}
 
+	/**
+	 * Scan the package and get all instantiable handlers.
+	 *
+	 * @param handlersReflections a {@link org.reflections.Reflections} object initialized on a package.
+	 * @return all found class
+	 */
 	protected final Set<Class<? extends ScopedPropertiesHandler>> getHandlers(Reflections handlersReflections) {
 		Set<Class<? extends ScopedPropertiesHandler>> foundClasses = handlersReflections.getSubTypesOf(ScopedPropertiesHandler.class);
 		Iterator<Class<? extends ScopedPropertiesHandler>> iterator = foundClasses.iterator();
@@ -93,6 +112,12 @@ public class ScopedProperties {
 		return foundClasses;
 	}
 
+	/**
+	 * get all JAXB annotated classes
+	 *
+	 * @param handlersReflections
+	 * @return
+	 */
 	protected final Set<Class<?>> getJaxbClasses(Reflections handlersReflections) {
 		Set<Class<?>> foundClasses = new HashSet<>();
 		foundClasses.addAll(handlersReflections.getTypesAnnotatedWith(XmlRootElement.class));
@@ -101,6 +126,12 @@ public class ScopedProperties {
 		return foundClasses;
 	}
 
+	/**
+	 * Start all thread and collect result's files.
+	 *
+	 * @return all created files.
+	 * @throws BuildPropertiesFilesException
+	 */
 	public Set<File> buildPropertiesFiles() throws BuildPropertiesFilesException {
 		File[] propertiesXmlFiles = configuration.getPropertiesXmlFolder().listFiles((FileFilter) new SuffixFileFilter(".properties.xml"));
 		Set<File> outputFileSet = new HashSet<>(propertiesXmlFiles.length);

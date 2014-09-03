@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.util.Properties;
 
 /**
+ * The default handler.<br>
+ * It will be create the output .properties file
  * Created by famaridon on 13/08/2014.
  */
 @CustomHandler(shortName = "properties")

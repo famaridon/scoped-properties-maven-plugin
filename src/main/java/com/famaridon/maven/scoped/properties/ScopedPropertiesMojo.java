@@ -12,7 +12,6 @@ import org.slf4j.impl.StaticLoggerBinder;
 
 import java.io.File;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by famaridon on 19/05/2014.
@@ -58,7 +57,7 @@ public class ScopedPropertiesMojo extends AbstractMojo {
 			configurationBuilder.appendTargetScope(this.getTargetScope());
 			configurationBuilder.appendHandlerPackages(this.getHandlerPackages());
 			ScopedProperties scopedProperties = new ScopedProperties(configurationBuilder.build());
-			Set<File> outputFileSet = scopedProperties.buildPropertiesFiles();
+			scopedProperties.buildPropertiesFiles();
 		} catch (BuildPropertiesFilesException e) {
 			throw new MojoExecutionException("An exception occur see cause :  ", e);
 		}
