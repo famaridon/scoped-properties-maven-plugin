@@ -1,0 +1,121 @@
+@gray-lighter: lighten(#000, 93.5%);
+@body-bg: @gray-lighter;
+@brand-primary: #fe7601;
+
+@font-size-base: 12px;
+@font-size-large: ceil((@font-size-base * 1.25));
+@font-size-small: ceil((@font-size-base * 0.85));
+@font-size-h1: floor((@font-size-base * 2.6));
+@font-size-h2: floor((@font-size-base * 1.85));
+@font-size-h3: ceil((@font-size-base * 1.5));
+@font-size-h4: ceil((@font-size-base * 1.25));
+@font-size-h5: @font-size-base;
+@font-size-h6: ceil((@font-size-base * 0.85));
+
+body{
+	background-color: @body-bg;
+	font-size: @font-size-base;
+}
+
+h3{
+	color: @brand-primary;
+}
+
+h1, .h1 {
+	font-size: @font-size-h1; 
+}
+h2, .h2 {
+	font-size: @font-size-h2; 
+}
+h3, .h3 {
+	font-size: @font-size-h3;
+	small.when{
+		padding-left:@font-size-base; // add empty char
+	}
+}
+h4, .h4 {
+	font-size: @font-size-h4; 
+}
+h5, .h5 {
+	font-size: @font-size-h5; 
+}
+h6, .h6 {
+	font-size: @font-size-h6; 
+}
+
+.list-inline>li{
+	border: 1px solid @gray-lighter;
+	border-radius: 5px;
+	.sparator {
+		border-left: 1px dotted @gray-lighter;
+		padding-left: 5px;
+	}
+}
+
+.element{
+	background-color: #ffffff;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	padding-top: 5px;
+	padding-right: 5px;
+	padding-bottom: 5px;
+	padding-left: 15px;
+	border-radius: 5px;
+}
+
+.skill{
+	@media print{
+		.dl-horizontal dt {
+			float: left;
+			width: 200px;
+			clear: left;
+			text-align: right;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			margin-right: 5px;
+			&:after{
+				content: ':';
+			}
+		}
+	}
+	dt {
+		font-weight: normal;
+	}
+}
+
+.star-bar{
+	&.sb-0:before{
+		content: "\f006\f006\f006\f006\f006";
+	}
+	&.sb-0-h:before{
+		content: "\f123\f006\f006\f006\f006";
+	}
+	&.sb-1:before{
+		content: "\f005\f006\f006\f006\f006";
+	}
+	&.sb-1-h:before{
+		content: "\f005\f123\f006\f006\f006";
+	}
+	&.sb-2:before{
+		content: "\f005\f005\f006\f006\f006";
+	}
+	&.sb-2-h:before{
+		content: "\f005\f005\f123\f006\f006";
+	}
+	&.sb-3:before{
+		content: "\f005\f005\f005\f006\f006";
+	}
+	&.sb-3-h:before{
+		content: "\f005\f005\f005\f123\f006";
+	}
+	&.sb-4:before{
+		content: "\f005\f005\f005\f005\f006";
+	}
+	&.sb-4-h:before{
+		content: "\f005\f005\f005\f005\f123";
+	}
+	&.sb-5:before{
+		content: "\f005\f005\f005\f005\f005";
+	}
+}

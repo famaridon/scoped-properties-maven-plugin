@@ -1,0 +1,164 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Florent Amaridon. Scoped properties (How to)</title>
+    
+    <!-- bootstrap -->
+    <meta charset="utf-8" />
+        <!-- for bootstrap I put it whit php for HTML5 complience  -->
+    <!--<meta http-equiv="X-UA-Compatible" content="IE=edge" />-->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
+    <link rel="stylesheet" href="/framework/font-awesome/css/font-awesome.min.css" />
+    
+    <link rel="stylesheet" href="/framework/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/framework/bootstrap/css/bootstrap-theme.min.css" />
+    
+    <link rel="stylesheet" href="/framework/prism/prism.css" />
+    
+    <!-- a custom CSS-->
+    <link rel="stylesheet" href="/css/style.css" />
+    <!-- add a model css -->
+    <link rel="stylesheet" href="/css/models/custom.css" />
+        <link href="http://fonts.googleapis.com/css?family=ABeeZee%7CAnonymous%20Pro" rel="stylesheet" type="text/css" />
+    
+</head>
+<body class="custom fix-navbar " data-spy="scroll" data-target="#side-nav" data-offset="70">
+
+    
+<!-- Fixed navbar -->
+
+<header>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
+                    <i class="fa fa-th-list" ></i>
+                </button>
+                <span class="navbar-brand" >
+                    <a  href="http://famaridon.com" ><i class="home fa fa-home" ></i></a><span>&nbsp;Scoped properties</span>
+                </span>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="/projects/scoped-properties/how-to.php">How to</a></li>
+                    <li class=""><a href="/projects/scoped-properties/maven.php">Maven</a></li>
+                    <li class=""><a href="/projects/scoped-properties/ant.php">Ant</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<div class="container custom-container" >
+    <div class="row">
+        <div id="content" class="col-xs-12 col-lg-9">
+
+            <h1 id="description">Description</h1>
+            <p>So many time I have projects with multiple target environments, my computer (developement), a virtual machine locally hosted by my company (pre-production), and the client environment (production).</p>
+            <p>All project need configurations and I used many time <em>.properties</em> files. It's easy to used and I have many utility tools in my company software.</p>
+            <p>But I it's hard to manage many environment in this files and VCS. Consultant wants store the client properties files but where store the local hosted properties and the developer properties?</p>
+            <p>My solution is tu store only an XML file whose have all environments properties and build the <em>.properties</em> file during the compilation process.</p>
+
+            <h1 id="configuration" >Configuration</h1>
+            <p>The scoped properties tools consume an <strong>.properties.xml</strong> to produce a <strong>.properties</strong> file.</p>
+
+            <h2 id="consume" >Consume <i>.properties.xml</i></h2>
+            <h3>A simple example</h3>
+
+            <pre data-src="/projects/scoped-properties/resources/simple-example.properties.xml" >
+        </pre>
+
+            <h2 id="xml">XML definition</h2>
+            <h3 id="property" class="token tag" >&lt;property&gt;</h3>
+            <div class="row">
+                <div class="col-xs-12 ">
+                    <div class="panel panel-default" >
+                        <div class="panel-heading">
+                            <h6 class="panel-title" >Attributs</h6>
+                        </div>
+                        <div class="panel-body">
+                            <dl class="dl-horizontal attributs" >
+                                <dt><span class="token attr-name" >name</span></dt>
+                                <dd>the final property name</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 ">
+                    <div class="panel panel-default" >
+                        <div class="panel-heading">
+                            <h6 class="panel-title" >Elements</h6>
+                        </div>
+                        <div class="panel-body">
+                            <dl class="dl-horizontal elements" >
+                                <dt><span class="token tag" >default-value</span></dt>
+                                <dd>the default peroperty value used.</dd>    
+                                <dt><span class="token tag" >values</span></dt>
+                                <dd>a list of <a href="#environment"><span class="token tag" >environment</span></a> elements for specific environment value.</dd>
+                                </div>
+                            </dl>
+                    </div>
+                </div>
+            </div>
+
+            <h3 id="environment" class="token tag">&lt;environment&gt;</h3>
+            <div class="row">
+                <div class="col-xs-12 ">
+                    <div class="panel panel-default" >
+                        <div class="panel-heading">
+                            <h6 class="panel-title" >Attributs</h6>
+                        </div>
+                        <div class="panel-body">
+                            <dl class="dl-horizontal attributs" >
+                                <dt><span class="token attr-name" >scope</span></dt>
+                                <dd>the scope name</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 ">
+                    <div class="panel panel-default" >
+                        <div class="panel-heading">
+                            <h6 class="panel-title" >Elements</h6>
+                        </div>
+                        <div class="panel-body">
+                            <dl class="dl-horizontal elements" >
+                                <dt><span class="token tag" >value</span></dt>
+                                <dd>the scope specific value.</dd>    
+                                </div>
+                            </dl>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div id="side-nav" class="visible-lg col-lg-3">
+            <ul class="nav nav-list affix">
+                <li class="sidebar-service"><a href="#description">Description</a></li>
+                <li class="sidebar-service active"><a href="#configuration">Configuration</a>
+                    <ul class="list-unstyled" >
+                        <li class="sidebar-method"><a href="#consume">Consume</a></li> 
+                        <li class="sidebar-method"><a href="#xml">XML definition</a></li> 
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>	
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins -->
+    <!-- TODO : inculde only needed plugins -->
+    <script src="/framework/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/framework/prism/prism.js"></script>
+
+		<footer class="site-footer hidden-print" role="contentinfo">
+        <div class="center-block footer-content">
+            Find me on <a href="https://www.linkedin.com/pub/florent-amaridon/80/48b/426"><img src="/images/logos/linkedin.png" alt="LinkedIn" /></a> or <a href="https://www.facebook.com/florent.amaridon"><img src="/images/logos/facebook.png" alt="LinkedIn" /></a>
+        </div>
+    </footer>
+</body>
+</html>

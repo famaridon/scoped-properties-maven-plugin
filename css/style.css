@@ -1,0 +1,90 @@
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    position: relative;
+    min-height: 100%;
+}
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 170px;
+}
+
+/* to fix the navbar content alignement */
+body.fix-navbar {
+    padding-top: 60px;
+}
+
+.navbar .navbar-toggle{
+    color: #FFFFFF;
+    font-size: 24px;
+    padding: 1px 6px 1px 6px;
+}
+
+/* css trick fond at http://stackoverflow.com/a/13881860 */
+h1[id],h2[id] {
+  padding-top: 60px;
+  margin-top: -60px;
+}
+
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 70px;
+    padding-top: 25px;
+    margin-top: 100px;
+    color: #777;
+    text-align: center;
+    border-top: 1px solid #e5e5e5;
+}
+
+.site-footer .footer-content{
+    text-align: center;
+}
+
+.site-footer .footer-content img{
+    max-height: 18px;
+    margin-bottom: 9px;
+}
+
+/* custom button style */
+.btn-outline {
+    color: #fe7601;
+    background-color: transparent;
+    border-color: #fe7601;
+}
+
+.btn-outline:hover, .btn-outline:focus, .btn-outline:active {
+    color: #ffffff;
+    background-color: #fe7601;
+    border-color: #fe7601;
+}
+
+/* Sidebar nav */
+#side-nav {
+	font-size: 12px;
+	list-style: none outside none;
+	padding-left: 0;
+}
+
+#side-nav .active>a {
+	border-left: 2px solid;
+}
+
+#side-nav li:not(.active  ) ul {
+	display: none;
+}
+
+#side-nav .active>a {
+	padding-left: 18px;
+}
+
+#side-nav *:not(.active ) >a {
+	padding-left: 20px;
+}
+
+#side-nav.nav .nav li {
+	padding-left: 20px;
+}
